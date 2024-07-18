@@ -9,8 +9,4 @@ function createBoard() {
     return board;
 };
 
-function letterRow() {
-    
-}
-
 export {createBoard};

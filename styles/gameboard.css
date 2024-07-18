@@ -8,7 +8,10 @@
     grid-template-rows: repeat(11, auto);
 }
 
-#positions {
+.positions {
+    display: grid;
+    grid-column-start: 2;
+    grid-row-start: 2;
     grid-template-columns: repeat(10, 3rem);
     grid-template-rows: repeat(10, auto);
 }
@@ -31,12 +34,21 @@
     width: 20px;
     height: 20px;
     padding: 1em;
+    background-color: blue;
     border: 1px solid black;
     
 }
 
 .ship {
+    background-color: grey;
+}
+
+.hit {
     background-color: green;
+}
+
+.miss {
+    background-color: red;
 }
 
 #letters-row, #numbers-column > span {
