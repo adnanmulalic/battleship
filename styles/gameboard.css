@@ -44,11 +44,11 @@
 }
 
 .hit {
-    background-color: green;
+    background-color: red;
 }
 
 .miss {
-    background-color: red;
+    background-color: white
 }
 
 #letters-row, #numbers-column > span {

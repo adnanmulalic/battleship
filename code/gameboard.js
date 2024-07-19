@@ -52,7 +52,7 @@ export class Gameboard {
 
     recieveAttack(x, y) { // "b", 1
         let hit = false;
-        for (const ship in this.ships) { // loop throus each ship objectin ships object
+        for (const ship in this.ships) { // loop through each ship object in ships object
             this.ships[ship].position.forEach((xy) => { //for each coordinate pair in position property
                 if (xy[0] === x && xy[1] === y) {
                     hit = true;
