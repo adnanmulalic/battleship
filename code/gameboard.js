@@ -4,7 +4,7 @@ import { Ship } from "./ship.js";
 export class Gameboard {
     constructor() {
         this.board = createBoard();
-        this.missedAttacks = [];
+        this.shots = [];
         this.shipPositions = [];
         this.ships = {
             destroyerOne : {
@@ -51,22 +51,16 @@ export class Gameboard {
     }
 
     recieveAttack(x, y) { // "b", 1
-        let hit = false;
+        let isHit = false;
         for (const ship in this.ships) { // loop through each ship object in ships object
             this.ships[ship].position.forEach((xy) => { //for each coordinate pair in position property
                 if (xy[0] === x && xy[1] === y) {
-                    hit = true;
+                    isHit = true;
                     this.ships[ship].stats.hit();
                 }
             })
         }
-
-        if (hit) {
-            return hit;
-        } else {{
-            this.missedAttacks.push([x, y]);
-            return hit;
-        }}
+        this.shots.push({isHit, coordinate: [x, y]});
     }
 
     allShipsSunk() {

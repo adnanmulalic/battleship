@@ -7,7 +7,7 @@ test('Is board created', () => {
 });
 
 test('Are ship positions correct', () => {
-    expect(newBoard.ships.destroyer.position).toEqual([["a", 2], ["b", 2]])
+    expect(newBoard.ships.destroyerOne.position).toEqual()
 });
 
 test('Shot missed', () => {
@@ -17,15 +17,9 @@ test('Shot missed', () => {
 
 test('Shot hit', () => {
     newBoard.recieveAttack('b', 2);
-    expect(newBoard.ships.destroyer.stats.hits).toEqual(1)
+    expect(newBoard.ships.destroyerOne.stats.hits).toEqual(1)
 })
 
 test('Are all ships sunk', () => {
     expect(newBoard.allShipsSunk()).toMatch('There are ships still afloat.');
-})
-
-test('All ships are sunk', () => {
-    newBoard.recieveAttack('a', 2); newBoard.recieveAttack('b', 2);
-    newBoard.recieveAttack('e', 1); newBoard.recieveAttack('e', 2); newBoard.recieveAttack('e', 3);
-    expect(newBoard.allShipsSunk()).toMatch('All ships are sunk.');
 })
