@@ -12,8 +12,14 @@ playerTwo.displayBoard(playerTwoBoard);
 let playerOneTiles = document.querySelectorAll("#gameboard-one > .positions > div.tile");
 let playerTwoTiles = document.querySelectorAll("#gameboard-two > .positions > div.tile");
 
-
 playerOne.placeShips(playerOneTiles);
+
+function isGameOver(player) {
+    if(player.gameBoard.allShipsSunk()) {
+        document.querySelector("h1").innerText += "all ships are sunk. game over."
+        //remove event listeners
+    }
+}
 
 playerOneBoard.addEventListener("click", (event) => {
     if (!event.target.classList.contains("hit" || "miss")) {
@@ -29,12 +35,14 @@ playerTwoBoard.addEventListener("click", (event) => {
         let clickCoordinate = event.target.dataset.coordinate;
         playerTwo.gameBoard.recieveAttack(clickCoordinate[0], Number(clickCoordinate.slice(1)));
         playerTwo.displayShots(playerTwoTiles);
+        isGameOver(playerTwo);
         setTimeout(() => {
             let randomShot = playerOne.randomFire();
             console.log(randomShot)
             playerOne.gameBoard.recieveAttack(randomShot[0], randomShot[1]);
             playerOne.displayShots(playerOneTiles);
-        }, 500)
+            isGameOver(playerOne);
+        }, 400)
         console.log(playerTwo.gameBoard.ships.cruiserTwo.stats)
         console.log(playerTwo.gameBoard.allShipsSunk())
     }

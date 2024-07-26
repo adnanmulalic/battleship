@@ -70,11 +70,7 @@ export class Gameboard {
                 shipsSunk = false;
             }
         }
-        if (shipsSunk) {
-            return 'All ships are sunk.'
-        } else {
-            return 'There are ships still afloat.'
-        }
+        return shipsSunk;
     }
 
     randomCoordinates(shipLength) { // create random coordinates for ship based on length parameter

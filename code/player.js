@@ -41,6 +41,7 @@ export class Player{
     placeShips(playerTiles) {
         playerTiles.forEach((tile) => {
             for (const ship in this.gameBoard.ships) {
+                //let shipTile = document.createElement("div");
                 this.gameBoard.ships[ship].position.forEach((xy) => {
                     let coordinate = xy[0] + xy[1];
                     if (tile.dataset.coordinate === coordinate) {
@@ -53,7 +54,30 @@ export class Player{
 
     randomFire() {
         let columns = "abcdefghij";
+        //let columnsObject = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j"};
         let randomShot = [columns[Math.floor(Math.random() * 10)], Math.floor(Math.random() * 10) + 1];
+        if (this.gameBoard.shots.length !== 0 && this.gameBoard.shots[this.gameBoard.shots.length - 1].isHit) {
+            let correctShot = this.gameBoard.shots[this.gameBoard.shots.length - 1];
+            let columnOrRow = Math.floor(Math.random() * 2);
+            if (columnOrRow === 0) {
+                let incOrDec = Math.floor(Math.random() * 2);
+                let asciCode = correctShot.coordinate[0].charCodeAt();
+                if (asciCode - 1 < 97 || asciCode + 1 > 106) {
+                    asciCode - 1 < 97 ? incOrDec = 0 : incOrDec = 1;
+                }
+                incOrDec === 0 ? asciCode++ : asciCode--; 
+                randomShot = [String.fromCharCode(asciCode), correctShot.coordinate[1]]
+            } else {
+                let incOrDec = Math.floor(Math.random() * 2);
+                let numberCoordinate = correctShot.coordinate[1];
+                if (numberCoordinate - 1 < 1 || numberCoordinate + 1 > 10) {
+                    numberCoordinate - 1 < 1 ? incOrDec = 0 : incOrDec = 1;
+                }
+                randomShot[0] = correctShot.coordinate[0];
+                incOrDec === 0 ? randomShot[1] = correctShot.coordinate[1] + 1 : randomShot[1] = correctShot.coordinate[1] - 1;
+            }
+            
+        }
         let sameShot = false;
         for (let i = 0; i < this.gameBoard.shots.length; i++) {
             if (randomShot[0] === this.gameBoard.shots[i].coordinate[0] && randomShot[1] === this.gameBoard.shots[i].coordinate[1]) {
