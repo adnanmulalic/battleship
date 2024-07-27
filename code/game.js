@@ -43,8 +43,7 @@ playerTwoBoard.addEventListener("click", (event) => {
             playerOne.displayShots(playerOneTiles);
             isGameOver(playerOne);
         }, 400)
-        console.log(playerTwo.gameBoard.ships.cruiserTwo.stats)
-        console.log(playerTwo.gameBoard.allShipsSunk())
+        console.log(playerOne.gameBoard.shots)
     }
 });
 

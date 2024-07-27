@@ -52,12 +52,21 @@ export class Player{
         });   
     }
 
-    randomFire() {
+    randomFire(sameShotCounter = 0) {
         let columns = "abcdefghij";
-        //let columnsObject = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h", 8: "i", 9: "j"};
+        let correctShot = null;
+        if (this.gameBoard.shots.length > 0) {
+            for (let i = this.gameBoard.shots.length - 1; i >= 0; i--) {
+                if (this.gameBoard.shots[i].isHit) {
+                    correctShot = this.gameBoard.shots[i];
+                    break;
+                }
+            }
+        }
         let randomShot = [columns[Math.floor(Math.random() * 10)], Math.floor(Math.random() * 10) + 1];
-        if (this.gameBoard.shots.length !== 0 && this.gameBoard.shots[this.gameBoard.shots.length - 1].isHit) {
-            let correctShot = this.gameBoard.shots[this.gameBoard.shots.length - 1];
+        // (this.gameBoard.shots.length !== 0 && this.gameBoard.shots[this.gameBoard.shots.length - 1].isHit) || (this.gameBoard.shots.length > 1 && this.gameBoard.shots[this.gameBoard.shots.length - 2].isHit)
+        if (correctShot !== null) {
+            //correctShot = this.gameBoard.shots[this.gameBoard.shots.length - 1].isHit ? this.gameBoard.shots[this.gameBoard.shots.length - 1] : this.gameBoard.shots[this.gameBoard.shots.length - 2];
             let columnOrRow = Math.floor(Math.random() * 2);
             if (columnOrRow === 0) {
                 let incOrDec = Math.floor(Math.random() * 2);
@@ -76,7 +85,11 @@ export class Player{
                 randomShot[0] = correctShot.coordinate[0];
                 incOrDec === 0 ? randomShot[1] = correctShot.coordinate[1] + 1 : randomShot[1] = correctShot.coordinate[1] - 1;
             }
+            sameShotCounter++;
             
+        }
+        if (sameShotCounter >= 20) {
+            randomShot = [columns[Math.floor(Math.random() * 10)], Math.floor(Math.random() * 10) + 1];
         }
         let sameShot = false;
         for (let i = 0; i < this.gameBoard.shots.length; i++) {
@@ -86,7 +99,7 @@ export class Player{
             }
         }
         if (sameShot) {
-            return this.randomFire();
+            return this.randomFire(sameShotCounter);
         }
         return randomShot;
 
