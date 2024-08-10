@@ -19,10 +19,10 @@ export class Gameboard {
                 stats: new Ship(2),
                 position: this.randomCoordinates(2, this.shipPositions)  //[["a", 2], ["b", 2]]
             },
-            destroyerFour : {
+            /* destroyerFour : {
                 stats: new Ship(2),
                 position: this.randomCoordinates(2, this.shipPositions)  //[["a", 2], ["b", 2]]
-            },
+            }, */
             cruiserOne : {
                 stats: new Ship(3),
                 position: this.randomCoordinates(3, this.shipPositions)  //[["e", 1], ["e", 2], ["e", 3]]
@@ -31,10 +31,10 @@ export class Gameboard {
                 stats : new Ship(3),
                 position: this.randomCoordinates(3, this.shipPositions)
             },
-            cruiserThree : {
+            /* cruiserThree : {
                 stats : new Ship(3),
                 position: this.randomCoordinates(3, this.shipPositions)
-            },
+            }, */
             battleshipOne : {
                 stats: new Ship(4),
                 position: this.randomCoordinates(4, this.shipPositions)  //[["i", 2], ["i", 3], ["i", 4], ["i", 5]]
@@ -52,15 +52,18 @@ export class Gameboard {
 
     recieveAttack(x, y) { // "b", 1
         let isHit = false;
+        let shipObject = null;
         for (const ship in this.ships) { // loop through each ship object in ships object
             this.ships[ship].position.forEach((xy) => { //for each coordinate pair in position property
                 if (xy[0] === x && xy[1] === y) {
                     isHit = true;
                     this.ships[ship].stats.hit();
+                    shipObject = this.ships[ship];
                 }
             })
         }
         this.shots.push({isHit, coordinate: [x, y]});
+        if (isHit) {return shipObject};
     }
 
     allShipsSunk() {
