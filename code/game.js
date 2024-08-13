@@ -38,55 +38,52 @@ function isGameOver(playerOne, playerTwo) {
 }
 
 function playerAttackClick(event) {
-    if (event.target.classList.contains("tile")) { // if tile has only one class, it wasnt clicked yet
-        let clickCoordinate = event.target.dataset.coordinate;
-        //console.log(event.target)
-        let shipObject = playerTwo.gameBoard.recieveAttack(clickCoordinate[0], Number(clickCoordinate.slice(1)));
-        playerTwo.displayShots(playerTwoTiles);
-        if (shipObject && shipObject.stats.sunk) {
-            playerTwoTiles.forEach((tile) => {
-                shipObject.position.forEach((shipCoordinate) => {
-                    if (tile.dataset.coordinate[0] === shipCoordinate[0] && Number(tile.dataset.coordinate.slice(1)) === shipCoordinate[1]) {
-                        tile.classList.add("shipSunkTile");
-                    }
-                })
-                
-            })
-        }
-        if (isGameOver(playerOne, playerTwo)) {
-            playerTwoTiles.forEach((tile) => tile.removeEventListener("click", playerAttackClick));
-        } else {
-            setTimeout(() => {
-                let randomShot = playerOne.randomFire();
-                //console.log(randomShot);
-                let playerShipObject = playerOne.gameBoard.recieveAttack(randomShot[0], randomShot[1]);
-                playerOne.displayShots(playerOneGridTiles);
-                if (playerShipObject && playerShipObject.stats.sunk) {
-                    playerOneGridTiles.forEach((tile) => {
-                        playerShipObject.position.forEach((shipCoordinate) => {
-                            if (tile.dataset.coordinate[0] === shipCoordinate[0] && Number(tile.dataset.coordinate.slice(1)) === shipCoordinate[1]) {
-                                tile.classList.add("shipSunkTile");
-                            }
-                        })
-                        
+        if (event.target.classList.contains("tile")) { // if tile has only one class, allow click
+            let clickCoordinate = event.target.dataset.coordinate;
+            let shipObject = playerTwo.gameBoard.recieveAttack(clickCoordinate[0], Number(clickCoordinate.slice(1)));
+            playerTwo.displayShots(playerTwoTiles);
+            event.target.removeEventListener("click", playerAttackClick)
+            if (shipObject && shipObject.stats.sunk) {
+                playerTwoTiles.forEach((tile) => {
+                    shipObject.position.forEach((shipCoordinate) => {
+                        if (tile.dataset.coordinate[0] === shipCoordinate[0] && Number(tile.dataset.coordinate.slice(1)) === shipCoordinate[1]) {
+                            tile.classList.add("shipSunkTile");
+                        }
                     })
-                }
-            }, 200)
+                    
+                })
+            }
+            
+            if (isGameOver(playerOne, playerTwo)) {
+                playerTwoTiles.forEach((tile) => tile.removeEventListener("click", playerAttackClick));
+            } else {
+                setTimeout(() => {
+                    let randomShot = playerOne.randomFire();
+                    let playerShipObject = playerOne.gameBoard.recieveAttack(randomShot[0], randomShot[1]);
+                    playerOne.displayShots(playerOneGridTiles);
+                    if (playerShipObject && playerShipObject.stats.sunk) {
+                        playerOneGridTiles.forEach((tile) => {
+                            playerShipObject.position.forEach((shipCoordinate) => {
+                                if (tile.dataset.coordinate[0] === shipCoordinate[0] && Number(tile.dataset.coordinate.slice(1)) === shipCoordinate[1]) {
+                                    tile.classList.add("shipSunkTile");
+                                }
+                            })
+                            
+                        })
+                    }
+                    if (isGameOver(playerOne, playerTwo)) {
+                        playerTwoTiles.forEach((tile) => tile.removeEventListener("click", playerAttackClick));
+                    }
+                }, 100)
+            }
+
+    
+            document.querySelector("#randomize-restart-button").innerText = "Restart game";
         }
-        document.querySelector("#randomize-restart-button").innerText = "Restart game";
-    }
+    
 }
 
 //event listeners
-
-/* playerOneBoard.addEventListener("click", (event) => {
-    if (!event.target.classList.contains("hit" || "miss")) {
-        let clickCoordinate = event.target.dataset.coordinate;
-        playerOne.gameBoard.recieveAttack(clickCoordinate[0], Number(clickCoordinate.slice(1)));
-        playerOne.displayShots(playerOneTiles);
-        console.log(playerOne.gameBoard.allShipsSunk())
-    }
-}); */
 
 
 playerTwoTiles.forEach((tile) => {
@@ -108,6 +105,7 @@ document.querySelector("#randomize-restart-button").addEventListener("click", (e
     playerOne.displayBoard(playerOneBoard);
     playerOneTiles = document.querySelectorAll("#gameboard-one > .positions > div");
     playerOne.placeShips(playerOneTiles);
+
     //"computer" player
     playerTwo = new Player();
     while(playerTwoBoard.firstChild) {
@@ -116,6 +114,7 @@ document.querySelector("#randomize-restart-button").addEventListener("click", (e
     playerTwo.displayBoard(playerTwoBoard);
     playerTwoTiles = document.querySelectorAll("#gameboard-two > .positions > div");
     playerTwoTiles.forEach((tile) => tile.addEventListener("click", playerAttackClick));
+    
     document.querySelector("#game-winner").innerText = "";
 })
 

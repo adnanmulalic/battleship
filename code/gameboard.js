@@ -1,9 +1,8 @@
-import { createBoard } from "./createboard.js";
 import { Ship } from "./ship.js";
 
 export class Gameboard {
     constructor() {
-        this.board = createBoard();
+        this.board = this.createBoard();
         this.shots = [];
         this.shipPositions = [];
         this.ships = {
@@ -48,6 +47,17 @@ export class Gameboard {
                 position: this.randomCoordinates(5, this.shipPositions)   //[["c", 9], ["d", 9], ["e", 9], ["f", 9], ["g", 9]]
             }
         }
+    }
+
+    createBoard() {
+        let board = [];
+        let letters = "abcdefghij";
+        for (let y = 0; y < 10; y++) {
+            for (let x = 0; x < 10; x++) {
+                board.push([letters[x], y + 1]);
+            };
+        };
+        return board;
     }
 
     recieveAttack(x, y) { // "b", 1
